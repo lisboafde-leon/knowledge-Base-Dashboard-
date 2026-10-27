@@ -1,0 +1,128 @@
+{
+  "_about": "Ground truth for week 2. Used by the evaluation step.",
+  "projects": {
+    "medical-records-ocr": {
+      "status": "At risk",
+      "go_live": "April 2027",
+      "decisions": [
+        "ClearScan selected as OCR engine",
+        "Human review confidence threshold 0.85"
+      ],
+      "blockers": [
+        "Scanner hardware delivery for second clinic",
+        "ClearScan API rate limit of 200 forms per hour"
+      ],
+      "next_steps": [
+        "Expand test batch to 500 forms",
+        "Draft review queue workflow with clinic staff",
+        "Request higher API rate limit from ClearScan"
+      ]
+    },
+    "pharmacy-delivery": {
+      "status": "On track",
+      "decisions": [
+        "MedDash is the courier partner (replaced SwiftRoute)",
+        "Delivery window 2 to 6 PM"
+      ],
+      "blockers": [
+        "Address validation fails for about 6 percent of member records"
+      ],
+      "next_steps": [
+        "Member satisfaction survey in week 3",
+        "Clean member address data with data team"
+      ]
+    },
+    "clinical-ai": {
+      "status": "On track",
+      "decisions": [
+        "Note summarization is first pilot workstream",
+        "Evaluation rubric approved with five criteria"
+      ],
+      "blockers": [],
+      "next_steps": [
+        "Run first evaluation round on 50 de identified notes"
+      ]
+    }
+  },
+  "changes": [
+    {
+      "project": "medical-records-ocr",
+      "file": "weekly_status.docx",
+      "meaningful": true,
+      "what": "Status moved to At risk and go live moved from March 2027 to April 2027"
+    },
+    {
+      "project": "medical-records-ocr",
+      "file": "weekly_status.docx",
+      "meaningful": true,
+      "what": "New blocker: ClearScan API rate limit"
+    },
+    {
+      "project": "medical-records-ocr",
+      "file": "weekly_status.docx",
+      "meaningful": true,
+      "what": "Accuracy improved from 91 to 93 percent"
+    },
+    {
+      "project": "medical-records-ocr",
+      "file": "kickoff_deck.pptx",
+      "meaningful": false,
+      "what": "Font size change only; text identical"
+    },
+    {
+      "project": "pharmacy-delivery",
+      "file": "weekly_status.docx",
+      "meaningful": true,
+      "what": "Courier partner changed from SwiftRoute to MedDash"
+    },
+    {
+      "project": "pharmacy-delivery",
+      "file": "weekly_status.docx",
+      "meaningful": true,
+      "what": "Pilot expanded from two to three clinics; on time rate 93 to 95 percent"
+    },
+    {
+      "project": "pharmacy-delivery",
+      "file": "weekly_status.docx",
+      "meaningful": false,
+      "what": "Rewording 'will run' to 'plans to run' with no change in meaning"
+    },
+    {
+      "project": "clinical-ai",
+      "file": "weekly_status.docx",
+      "meaningful": true,
+      "what": "Data access approved; status At risk to On track; blocker resolved"
+    },
+    {
+      "project": "clinical-ai",
+      "file": "weekly_status.docx",
+      "meaningful": true,
+      "what": "New decision: evaluation rubric approved"
+    }
+  ],
+  "contradictions": [
+    {
+      "project": "medical-records-ocr",
+      "what": "Kickoff deck says go live March 2027; weekly status says April 2027",
+      "files": [
+        "kickoff_deck.pptx",
+        "weekly_status.docx"
+      ]
+    },
+    {
+      "project": "pharmacy-delivery",
+      "what": "Kickoff deck lists two pilot clinics; weekly status says three",
+      "files": [
+        "kickoff_deck.pptx",
+        "weekly_status.docx"
+      ]
+    }
+  ],
+  "unchanged_files": [
+    "medical-records-ocr/phase_report.pdf",
+    "pharmacy-delivery/kickoff_deck.pptx",
+    "pharmacy-delivery/phase_report.pdf",
+    "clinical-ai/kickoff_deck.pptx",
+    "clinical-ai/phase_report.pdf"
+  ]
+}
