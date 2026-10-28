@@ -63,6 +63,17 @@ The answer then goes through `kb/validate.py`, plain code with no AI, which chec
 
 The model sits behind `kb/llm.py`. The mock fills the form with simple rules so everything runs offline. To use Claude, copy `.env.example` to `.env`, set `KB_MODEL=claude` and add an API key from León's company account, then rerun the same command.
 
+## Phase 4: change detection
+
+```
+python -m kb.changes week1 week2
+python tests/check_changes.py
+```
+
+Compares two snapshots in three layers, cheapest first. Layer 1 skips any file whose bytes are identical. Layer 2 catches files whose bytes changed but whose words did not (a font change, for example) and logs them as formatting only. Layer 3 finds the exact chunks that were added, removed or edited, and only those go to the model, which marks each one meaningful or minor and writes a one sentence summary.
+
+The first two layers are plain code and cost nothing. A validator makes sure every changed chunk gets exactly one verdict: if the model skips one it is marked `needs_review`, and any chunk ID the model invents is ignored. Results are saved to `output/changes/<old>_to_<new>.json`, including token use compared with rerunning full extraction.
+
 ## Project layout
 
 ```
