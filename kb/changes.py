@@ -103,16 +103,25 @@ def _mock_verdict(p) -> tuple[bool, str]:
     """Simple rules standing in for a model. Added or removed chunks always matter.
     For edits, a change matters if the words that differ include a number or a
     capitalized word (names, dates, statuses). Otherwise it is treated as rewording."""
+    new_t, old_t = _clean(p["new_text"]), _clean(p["old_text"])
     if p["kind"] == "added":
-        return True, f"New in {p['section']}: {p['new_text']}"
+        return True, f"New in {p['section']}: {new_t}"
     if p["kind"] == "removed":
-        return True, f"Removed from {p['section']}: {p['old_text']}"
+        return True, f"Removed from {p['section']}: {old_t}"
     old_w, new_w = WORD.findall(p["old_text"]), WORD.findall(p["new_text"])
     diff = set(old_w) ^ set(new_w)
     important = [w for w in diff if any(ch.isdigit() for ch in w) or w[0].isupper()]
     if important:
-        return True, f"{p['section']} now reads: \"{p['new_text']}\" (was: \"{p['old_text']}\")"
+        return True, f"{p['section']}: now \"{new_t}\" (was \"{old_t}\")"
     return False, f"Rewording in {p['section']} with no change in meaning."
+
+
+LABEL = re.compile(r"^(Status|Decision|Blocker|Next|Risk|Goal):\s*")
+
+
+def _clean(text):
+    """Drop a leading label like 'Blocker:' so summaries read naturally."""
+    return LABEL.sub("", text or "").rstrip(".")
 
 
 def interpret(pairs, client: LLMClient) -> tuple[list[dict], Usage | None]:

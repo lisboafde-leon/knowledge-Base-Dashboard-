@@ -74,11 +74,26 @@ Compares two snapshots in three layers, cheapest first. Layer 1 skips any file w
 
 The first two layers are plain code and cost nothing. A validator makes sure every changed chunk gets exactly one verdict: if the model skips one it is marked `needs_review`, and any chunk ID the model invents is ignored. Results are saved to `output/changes/<old>_to_<new>.json`, including token use compared with rerunning full extraction.
 
+## Phase 5: outputs, reports and dashboard
+
+```
+python -m kb.run                    # the whole pipeline in order (what the 7 a.m. job will do)
+streamlit run dashboard/app.py      # opens the dashboard in your browser
+python tests/check_publish.py
+```
+
+`kb/publish.py` turns fact sheets and the change log into CSV tables in `output/tables` with the exact columns planned for SharePoint lists: Projects, Facts, Changes, Conflicts and ReportRequests. It also writes one Markdown page per project in `output/pages`, readable by people and by Claude or Copilot for questions.
+
+`kb/report.py` builds a draft Word status report for one project, stamped DRAFT, with a numbered citation on every line and a Sources section quoting each location. It also handles the request flow planned for SharePoint: `--request <project>` queues a row as Pending, `--process` builds every pending report and marks it Ready.
+
+`dashboard/app.py` is a Streamlit proof of concept that reads only the tables, the same way a SharePoint or Power BI page would. It shows headline numbers, project cards (most urgent first), what changed, conflicts, every fact with its source and quote, and a Generate report button with a download. It is a demo tool, not the final front end.
+
 ## Project layout
 
 ```
 scripts/   corpus generator and its content
-kb/        pipeline code (phases 2 to 5)
+kb/        pipeline code (phases 2 to 5); kb/run.py runs it all
+dashboard/ Streamlit proof of concept dashboard
 corpus/    generated documents and answer key
 output/    generated tables and reports
 tests/     checks for each phase
