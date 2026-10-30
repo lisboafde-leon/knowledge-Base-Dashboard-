@@ -88,6 +88,24 @@ python tests/check_publish.py
 
 `dashboard/app.py` is a Streamlit proof of concept that reads only the tables, the same way a SharePoint or Power BI page would. It shows headline numbers, project cards (most urgent first), what changed, conflicts, every fact with its source and quote, and a Generate report button with a download. It is a demo tool, not the final front end.
 
+## Phase 6: evaluation
+
+```
+python -m kb.evaluate --models mock mock-noisy
+python tests/check_evaluate.py
+```
+
+Scores the pipeline against the answer key and writes a side by side report to `output/eval/comparison.md` (and `.csv`): status and go live accuracy, item F1 for decisions, blockers and next steps, unsupported claims per 100, contradiction recall, change detection and classification, tokens, estimated cost and run time. Items are matched by key words, but names and numbers must match exactly, so a stale vendor or a wrong figure never counts as correct. `mock-noisy` invents citations on purpose to show the scores react.
+
+When access arrives, add the key to `.env` and compare real models in one command:
+
+```
+python -m kb.evaluate --models mock claude:claude-haiku-5-5 claude:claude-sonnet-5-5
+python -m kb.evaluate --models mock foundry:<haiku-deployment> foundry:<sonnet-deployment>
+```
+
+A model without a key is reported as skipped; the rest still run.
+
 ## Project layout
 
 ```

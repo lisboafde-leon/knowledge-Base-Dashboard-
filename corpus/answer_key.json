@@ -118,6 +118,23 @@
       ]
     }
   ],
+  "change_verdicts": {
+    "clinical-ai/weekly_status.docx#blockers-1": true,
+    "clinical-ai/weekly_status.docx#current-status-1": true,
+    "clinical-ai/weekly_status.docx#decisions-2": true,
+    "clinical-ai/weekly_status.docx#next-steps-1": true,
+    "medical-records-ocr/weekly_status.docx#blockers-2": true,
+    "medical-records-ocr/weekly_status.docx#current-status-1": true,
+    "medical-records-ocr/weekly_status.docx#current-status-2": true,
+    "medical-records-ocr/weekly_status.docx#next-steps-3": true,
+    "pharmacy-delivery/weekly_status.docx#current-status-1": true,
+    "pharmacy-delivery/weekly_status.docx#current-status-2": true,
+    "pharmacy-delivery/weekly_status.docx#decisions-1": true,
+    "pharmacy-delivery/weekly_status.docx#next-steps-1": false
+  },
+  "cosmetic_files": [
+    "medical-records-ocr/kickoff_deck.pptx"
+  ],
   "unchanged_files": [
     "medical-records-ocr/phase_report.pdf",
     "pharmacy-delivery/kickoff_deck.pptx",

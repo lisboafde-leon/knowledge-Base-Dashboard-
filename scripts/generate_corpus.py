@@ -157,6 +157,23 @@ ANSWER_KEY = {
          "what": "Kickoff deck lists two pilot clinics; weekly status says three",
          "files": ["kickoff_deck.pptx", "weekly_status.docx"]},
     ],
+    # Chunk level ground truth for change review: every chunk whose words differ
+    # between week 1 and week 2, and whether a reader should be told about it.
+    "change_verdicts": {
+        "clinical-ai/weekly_status.docx#blockers-1": True,
+        "clinical-ai/weekly_status.docx#current-status-1": True,
+        "clinical-ai/weekly_status.docx#decisions-2": True,
+        "clinical-ai/weekly_status.docx#next-steps-1": True,
+        "medical-records-ocr/weekly_status.docx#blockers-2": True,
+        "medical-records-ocr/weekly_status.docx#current-status-1": True,
+        "medical-records-ocr/weekly_status.docx#current-status-2": True,
+        "medical-records-ocr/weekly_status.docx#next-steps-3": True,
+        "pharmacy-delivery/weekly_status.docx#current-status-1": True,
+        "pharmacy-delivery/weekly_status.docx#current-status-2": True,
+        "pharmacy-delivery/weekly_status.docx#decisions-1": True,
+        "pharmacy-delivery/weekly_status.docx#next-steps-1": False,
+    },
+    "cosmetic_files": ["medical-records-ocr/kickoff_deck.pptx"],
     "unchanged_files": [
         "medical-records-ocr/phase_report.pdf",
         "pharmacy-delivery/kickoff_deck.pptx",
@@ -168,6 +185,11 @@ ANSWER_KEY = {
 
 
 def main():
+    if "--key-only" in sys.argv:
+        # Rewrite only the answer key, leaving the documents (and their git history) untouched.
+        (CORPUS / "answer_key.json").write_text(json.dumps(ANSWER_KEY, indent=2))
+        print(f"Updated {CORPUS / 'answer_key.json'}")
+        return
     if CORPUS.exists():
         shutil.rmtree(CORPUS)
     build_week1()

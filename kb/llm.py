@@ -160,10 +160,31 @@ class ClaudeLLM(LLMClient):
         return json.loads(match.group(0)), Usage(resp.usage.input_tokens, resp.usage.output_tokens, self.model)
 
 
-def get_client(name: str | None = None, **kwargs) -> LLMClient:
+class FoundryLLM(ClaudeLLM):
+    """Claude deployed in Microsoft Foundry, billed on the Azure subscription.
+
+    Needs ANTHROPIC_FOUNDRY_API_KEY and ANTHROPIC_FOUNDRY_RESOURCE (the Foundry
+    resource name). KB_CLAUDE_MODEL must be the deployment name in Foundry.
+    """
+    name = "foundry"
+
+    def __init__(self, model: str | None = None):
+        import anthropic
+        key = os.environ.get("ANTHROPIC_FOUNDRY_API_KEY")
+        resource = os.environ.get("ANTHROPIC_FOUNDRY_RESOURCE")
+        if not (key and resource):
+            raise SystemExit("ANTHROPIC_FOUNDRY_API_KEY and ANTHROPIC_FOUNDRY_RESOURCE must be set for KB_MODEL=foundry")
+        self.client = anthropic.AnthropicFoundry(api_key=key, resource=resource)
+        self.model = model or os.environ.get("KB_CLAUDE_MODEL", "claude-sonnet-5-5")
+
+
+def get_client(name: str | None = None, model: str | None = None, **kwargs) -> LLMClient:
+    """name: mock | claude | foundry. model: a Claude model or Foundry deployment name."""
     name = (name or os.environ.get("KB_MODEL", "mock")).lower()
     if name == "mock":
         return MockLLM(**kwargs)
     if name == "claude":
-        return ClaudeLLM()
-    raise SystemExit(f"Unknown model '{name}'. Use mock or claude.")
+        return ClaudeLLM(model)
+    if name == "foundry":
+        return FoundryLLM(model)
+    raise SystemExit(f"Unknown model '{name}'. Use mock, claude or foundry.")
