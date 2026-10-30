@@ -1,0 +1,7 @@
+# Dashboard theme: indigo accent instead of Streamlit's default red.
+[theme]
+base = "light"
+primaryColor = "#5B5BD6"
+backgroundColor = "#F5F6FB"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1C1C3A"

@@ -84,9 +84,18 @@ try:
     at = AppTest.from_file(str(ROOT / "dashboard" / "app.py"), default_timeout=60).run()
     check("dashboard loads with no exceptions", not at.exception)
     check("dashboard shows the project title", any("Project Knowledge Base" in t.value for t in at.title))
-    at.button[0].click().run()
-    check("dashboard 'Generate report' button produces a download",
+    check("no overview is open until a card is clicked", not any(b.key == "close_overview" for b in at.button))
+    at.button(key="open_medical-records-ocr").click().run()
+    page = " ".join(m.value for m in at.markdown)
+    check("clicking a project card opens its overview below the cards",
+          not at.exception and any(b.key == "close_overview" for b in at.button)
+          and "ClearScan API rate limit" in page and "Go live date differs" in page)
+    at.button(key="gen_report").click().run()
+    check("overview 'Generate report' button produces a download",
           not at.exception and any("Draft ready" in s.value for s in at.success))
+    at.button(key="open_medical-records-ocr").click().run()
+    check("clicking the same card again closes the overview",
+          not any(b.key == "close_overview" for b in at.button))
 except ImportError:
     print("SKIP  dashboard checks: streamlit is not installed")
 
